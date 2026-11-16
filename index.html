@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logic Gate Compiler</title>
+  <link rel="stylesheet" href="src/ui/style.css" />
+</head>
+<body>
+  <header>
+    <h1>⚡ Logic Gate Compiler</h1>
+    <p>Write boolean logic, watch every compiler phase, get a truth table, a circuit and Verilog.</p>
+  </header>
+
+  <!-- Pipeline status: one chip per compiler phase -->
+  <nav id="pipeline" class="pipeline"></nav>
+
+  <main>
+    <!-- LEFT: source code editor -->
+    <section class="editor-pane">
+      <div class="toolbar">
+        <select id="examples"></select>
+        <button id="compileBtn">▶ Compile</button>
+      </div>
+      <textarea id="source" spellcheck="false"></textarea>
+      <div id="messages" class="messages"></div>
+      <details class="help">
+        <summary>Language reference</summary>
+        <pre>INPUT a, b, c;          # declare inputs
+OUTPUT out;             # declare outputs
+w = a XOR b;            # internal wire (auto-declared)
+out = (a AND b) OR NOT c;
+
+Operators : NOT  AND  NAND  XOR  OR  NOR
+Precedence: NOT > AND/NAND > XOR > OR/NOR
+Constants : 0  1        Comments: # ...  or  // ...</pre>
+      </details>
+    </section>
+
+    <!-- RIGHT: output of every phase -->
+    <section class="output-pane">
+      <div id="tabs" class="tabs">
+        <button data-tab="tokens">1. Tokens</button>
+        <button data-tab="ast">2. Parse Tree</button>
+        <button data-tab="symbols">3. Symbol Table</button>
+        <button data-tab="ir">4. IR (TAC)</button>
+        <button data-tab="optimized">5. Optimized IR</button>
+        <button data-tab="target">6. Verilog</button>
+        <button data-tab="truth">Truth Table</button>
+        <button data-tab="circuit">Circuit</button>
+      </div>
+      <div id="panel" class="panel"></div>
+    </section>
+  </main>
+
+  <!-- Compiler phases (order matters: each file uses the ones before it) -->
+  <script src="src/compiler/lexer.js"></script>
+  <script src="src/compiler/parser.js"></script>
+  <script src="src/compiler/semantic.js"></script>
+  <script src="src/compiler/ir.js"></script>
+  <script src="src/compiler/optimizer.js"></script>
+  <script src="src/compiler/codegen.js"></script>
+  <script src="src/compiler/pipeline.js"></script>
+
+  <!-- User interface -->
+  <script src="src/ui/examples.js"></script>
+  <script src="src/ui/diagrams.js"></script>
+  <script src="src/ui/app.js"></script>
+</body>
+</html>
